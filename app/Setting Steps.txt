@@ -1,0 +1,26 @@
+1 Virtual Env -> 
+    create a folder -> mkdir folder
+    python3 -m venv virtualenv 
+    source virtualenv/bin/activate
+    code . 
+
+2 Install libraries
+    pip install flask-appbuilder mysqlclient pylint
+
+3 Create database   
+    mysql -uroot -p 
+    [MYSQL]
+    create database NAME;
+    exit;
+
+3 Open Flask Appbuilder Documentation
+    https://flask-appbuilder.readthedocs.io/en/latest/index.html
+    
+4 Setting UP the APP Skeleton
+    export FLASK_APP=app
+    export FLASK_ENV=development
+    flask fab create-app
+    flask fab create-admin
+    flask run  -> localhost:5000
+
+
