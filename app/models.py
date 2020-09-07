@@ -23,13 +23,21 @@ class Codes(Model):
 
 class Discipline(Model):
     id = Column(Integer, primary_key=True)
-    code = Column(Integer)
+    code = Column(String(255), nullable=True)
     name = Column(String(255), nullable=True)
 
-class DocType(Model):
+    def __repr__(self):
+        return self.code + " " + self.name
+
+class Doctype(Model):
     id = Column(Integer, primary_key=True)
     code = Column(String(255), nullable=True)
     name = Column(String(255), nullable=True)
+
+    def __repr__(self):
+        return self.code + " " + self.name
+ 
+
 
 class Unit(Model):
     id = Column(Integer, primary_key=True)
@@ -37,11 +45,18 @@ class Unit(Model):
     name = Column(String(255), nullable=True)
 
     def __repr__(self):
-        return self.code
-
+        return self.code 
 
 class Request(Model):
     id = Column(Integer, primary_key=True)
     #unit = # picklist from unit table
     unit_id = Column(Integer, ForeignKey('unit.id'), nullable=False)
     unit = relationship("Unit") 
+
+    discipline_id = Column(Integer, ForeignKey('discipline.id'), nullable=False)
+    discipline = relationship("Discipline")
+
+    doctype_id = Column(Integer, ForeignKey('doctype.id'), nullable=False)
+    doctype = relationship("Doctype")
+
+  

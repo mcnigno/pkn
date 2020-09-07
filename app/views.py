@@ -35,13 +35,53 @@ from . import appbuilder, db
 """
     Application wide 404 error handler
 """
-from app.models import Unit, Request
+from app.models import Unit, Request, Discipline, Doctype, Matrix
+class DisciplineView(ModelView):
+    datamodel = SQLAInterface(Discipline)
+
+class DoctypeView(ModelView):
+    datamodel = SQLAInterface(Doctype)
+
+class MatrixView(ModelView):
+    datamodel = SQLAInterface(Matrix)
 
 class UnitView(ModelView):
     datamodel = SQLAInterface(Unit)
 
+from app.helpers import askcode
+from flask import flash
+
 class RequestView(ModelView):
-    datamodel = SQLAInterface(Request) 
+    datamodel = SQLAInterface(Request)
+
+    def post_add(self, item):
+        print("POST ADD FUNCTION IS RUNNING *********************************")
+        #print(item.discipline)
+        code = askcode(item.unit, item.discipline, item.doctype)
+        flash("Your code is: " + code, category="info")
+
+
+appbuilder.add_view(
+        DisciplineView,
+        "Discipline",
+        icon="fa-folder-open-o",
+        category="My Category",
+        category_icon='fa-envelope'
+    ) 
+appbuilder.add_view(
+        DoctypeView,
+        "DocType",
+        icon="fa-folder-open-o",
+        category="My Category",
+        category_icon='fa-envelope'
+    ) 
+appbuilder.add_view(
+        MatrixView,
+        "Matrix",
+        icon="fa-folder-open-o",
+        category="My Category",
+        category_icon='fa-envelope'
+    ) 
 
 appbuilder.add_view(
         UnitView,
