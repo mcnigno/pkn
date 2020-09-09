@@ -35,7 +35,7 @@ from . import appbuilder, db
 """
     Application wide 404 error handler
 """
-from app.models import Unit, Request, Discipline, Doctype, Matrix
+from app.models import Unit, Request, Discipline, Doctype, Matrix, Codes
 class DisciplineView(ModelView):
     datamodel = SQLAInterface(Discipline)
 
@@ -48,17 +48,33 @@ class MatrixView(ModelView):
 class UnitView(ModelView):
     datamodel = SQLAInterface(Unit)
 
+class CodesView(ModelView):
+    datamodel = SQLAInterface(Codes)
+
 from app.helpers import askcode
 from flask import flash
+from app import db
+
 
 class RequestView(ModelView):
     datamodel = SQLAInterface(Request)
-
+    
     def post_add(self, item):
         print("POST ADD FUNCTION IS RUNNING *********************************")
         #print(item.discipline)
-        code = askcode(item.unit, item.discipline, item.doctype)
-        flash("Your code is: " + code, category="info")
+        xcode = askcode(item.unit, item.discipline, item.doctype)
+        flash("Your code is: " + xcode, category="info")
+        # Database is alway a single concurrent session
+        session = db.session
+        newcode = Codes()
+        newcode.code = xcode
+
+        session.add(newcode)
+        session.commit()
+
+
+
+
 
 
 appbuilder.add_view(
@@ -97,7 +113,15 @@ appbuilder.add_view(
         icon="fa-folder-open-o",
         category="My Category",
         category_icon='fa-envelope'
+    )
+appbuilder.add_view(
+        CodesView,
+        "List of Codes",
+        icon="fa-folder-open-o",
+        category="Storage",
+        category_icon='fa-envelope'
     ) 
+
 
 @appbuilder.app.errorhandler(404)
 def page_not_found(e):
