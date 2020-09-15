@@ -48,6 +48,7 @@ class DisciplineView(ModelView):
 
 class DoctypeView(ModelView):
     datamodel = SQLAInterface(Doctype)
+    list_columns = ['code','name']
 
 class MatrixView(ModelView):
     datamodel = SQLAInterface(Matrix)
@@ -55,6 +56,7 @@ class MatrixView(ModelView):
 
 class UnitView(ModelView):
     datamodel = SQLAInterface(Unit)
+    list_columns = ['code','name']
 
 class CodesView(ModelView):
     datamodel = SQLAInterface(Codes)
