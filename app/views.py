@@ -175,4 +175,4 @@ def page_not_found(e):
 db.create_all()
 from app.helpers import upload_old_codes
 
-upload_old_codes()
+#upload_old_codes()
