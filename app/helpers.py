@@ -73,7 +73,7 @@ def askcode(unit, discipline, doctype, quantity):
     return codes_list
 
 from openpyxl import load_workbook
-from app.models import Unit, Doctype, Discipline, Codes
+from app.models import Unit, Doctype, Discipline, Codes, Request
 from app import db
 
 def upload_old_codes():
@@ -85,8 +85,19 @@ def upload_old_codes():
         discipline_code = row[1].value
         discipline_name = row[2].value
         unit_code = row[3].value
+        released_code = row[4].value
         doctype = row[5].value
         contractor_code = row[7].value
+
+        #add to internal note
+        revision = 'Rev: ' + str(row[8].value)
+        category = 'Cat: ' + str(row[9].value)
+        submittal_purpose = 'Sub: '+ str(row[10].value)
+        document_title = 'Title: '+str(row[11].value)
+        due_date = 'DueDate: '+str(row[12].value)
+
+        note = " ".join([revision, category, submittal_purpose, document_title, due_date])
+
 
         session = db.session
         new_unit = session.query(Unit).filter(Unit.code == unit_code).first()
@@ -108,15 +119,27 @@ def upload_old_codes():
             new_doctype.code = doctype
             session.add(new_doctype)
 
+        
+        request = Request()
+        request.discipline = new_discipline
+        request.unit = new_unit
+        request.doctype = new_doctype
+        request.quantity = 1
+        request.created_by_fk = '1'
+        request.changed_by_fk = '1'
+        session.add(request)
         session.flush()
+
         
         new_code = askcode(new_unit, new_discipline,new_doctype,1)
         
         code = Codes()
         code.code = new_code[0]
         code.contractor_code = contractor_code
-        code.request_id = 1
+        code.request_id = request.id
+        code.internal_note = note
         code.changed_by_fk = '1'
         code.created_by_fk = '1'
         session.add(code)
+        
     session.commit() 

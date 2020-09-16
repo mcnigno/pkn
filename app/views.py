@@ -62,12 +62,13 @@ class CodesView(ModelView):
     datamodel = SQLAInterface(Codes)
     list_columns = ['request.discipline','code', 'contractor_code']
     edit_columns = ['code', 'contractor_code']
-    show_columns = ['code', 'contractor_code']
-
+    show_columns = ['code', 'contractor_code','internal_note']
+  
 class MyCodesView(ModelView):
     datamodel = SQLAInterface(Codes)
-    list_columns = ['request.discipline','code', 'contractor_code']
+    list_columns = ['request.discipline','document_code', 'contractor_code']
     base_filters = [['created_by', FilterEqualFunction, get_user]]
+    base_order = ('changed_on','desc')
 
 from app.helpers import askcode
 from flask import flash

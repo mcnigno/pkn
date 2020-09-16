@@ -299,3 +299,12 @@ i.fa.fa-check-circle{
     text-align: center;
     font-size: 20pt;
 }
+.code_contractor{
+    background-color: rgb(188, 224, 90);
+    
+}
+.code_note{
+    background-color: rgb(250, 230, 48);
+    padding-left: 15px;
+    
+}

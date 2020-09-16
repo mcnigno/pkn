@@ -16,10 +16,6 @@ class Matrix(Model, AuditMixin):
     counter = Column(Integer)
 
 
-
-
-
-
 class Discipline(Model):
     id = Column(Integer, primary_key=True)
     code = Column(String(255), nullable=False, unique=False)
@@ -28,6 +24,8 @@ class Discipline(Model):
     stop = Column(Integer, unique=True) 
     
     def __repr__(self):
+        if self.name:
+            return self.code + " " + self.name
         return self.code 
     
 class Doctype(Model):
@@ -61,10 +59,29 @@ class Request(Model, AuditMixin):
 
     quantity = Column(Integer, nullable=False, default=1)
 
+from flask import Markup
 class Codes(Model, AuditMixin):
     id = Column(Integer, primary_key=True)
+
     code = Column(String(255), nullable=True, unique=True)
     contractor_code = Column(String(255), nullable=True, unique=True)
 
     request_id = Column(Integer, ForeignKey('request.id'), nullable=False)
-    request = relationship("Request")  
+    request = relationship("Request")
+
+    internal_note = Column(String(255), nullable=True)
+
+    def document_code(self):
+
+        p_code = '<span class=code_code>'+self.code+'<span>' 
+        if self.internal_note:
+            p_code = '<span class=code_code>'+self.code+'<span>'+'<span class=code_note>Note<span>'
+        '''
+        if self.contractor_code and self.internal_note:
+            return Markup('<strong class=code_note>'+self.code+'<strong>')
+        '''
+        if self.contractor_code:
+            return Markup('<span class=code_contractor>'+p_code+'<span>')
+        
+        return Markup(p_code) 
+   
