@@ -33,7 +33,7 @@ def askcode(unit, discipline, doctype, quantity):
     project_number = "A8RX"
     entity = "TSC"
     
-    params = [project_number, entity, str(unit.code), str(doctype.code), str(discipline.code)]
+    params = [project_number, entity, str(unit.code), str(discipline.code), str(doctype.code)]
     print('ASKCODE  * * * * * * params', params)
     base_data = "-".join(params)
     
