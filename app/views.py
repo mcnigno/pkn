@@ -67,7 +67,7 @@ class CodesView(ModelView):
 class MyCodesView(ModelView):
     datamodel = SQLAInterface(Codes)
     list_columns = ['request.discipline','document_code', 'contractor_code']
-    edit_columns = ['code', 'contractor_code']
+    edit_columns = ['code', 'contractor_code','internal_note']
     base_filters = [['created_by', FilterEqualFunction, get_user]]
     base_order = ('changed_on','desc')
 
