@@ -67,6 +67,7 @@ class CodesView(ModelView):
 class MyCodesView(ModelView):
     datamodel = SQLAInterface(Codes)
     list_columns = ['request.discipline','document_code', 'contractor_code']
+    edit_columns = ['code', 'contractor_code']
     base_filters = [['created_by', FilterEqualFunction, get_user]]
     base_order = ('changed_on','desc')
 
@@ -178,4 +179,4 @@ def page_not_found(e):
 db.create_all()
 from app.helpers import upload_old_codes
 
-#upload_old_codes()
+upload_old_codes()
